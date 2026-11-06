@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel | CampusConnect{% endblock %}
+{% block content %}
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div>
+            <p class="text-uppercase small fw-semibold text-success mb-2">CampusConnect / Administration</p>
+            <h1 class="display-6 fw-semibold mb-1">Admin panel</h1>
+            <p class="text-secondary mb-0">Review campus accounts and access status.</p>
+        </div>
+        <a class="btn btn-success" href="{% url 'admin:index' %}">Open Django admin</a>
+    </header>
+
+    <section class="row g-3 mb-4" aria-label="Account summary">
+        <div class="col-12 col-md-4">
+            <article class="card campus-card h-100"><div class="card-body">
+                <p class="text-secondary mb-2">Total accounts</p>
+                <strong class="fs-2">{{ member_count }}</strong>
+            </div></article>
+        </div>
+        <div class="col-12 col-md-4">
+            <article class="card campus-card h-100"><div class="card-body">
+                <p class="text-secondary mb-2">Administrators</p>
+                <strong class="fs-2">{{ admin_count }}</strong>
+            </div></article>
+        </div>
+        <div class="col-12 col-md-4">
+            <article class="card campus-card h-100"><div class="card-body">
+                <p class="text-secondary mb-2">Active accounts</p>
+                <strong class="fs-2">{{ active_count }}</strong>
+            </div></article>
+        </div>
+    </section>
+
+    <section class="card campus-card" aria-labelledby="accounts-heading">
+        <div class="card-body p-0">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 p-3 p-md-4 pb-3">
+                <h2 class="h5 mb-0" id="accounts-heading">Recent accounts</h2>
+                <span class="small text-secondary">Showing up to 100 accounts</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in members %}
+                        <tr>
+                            <td class="fw-semibold">{{ member.username }}</td>
+                            <td>{{ member.get_full_name|default:member.username }}</td>
+                            <td>{{ member.email|default:"-" }}</td>
+                            <td>{{ member.get_role_display }}</td>
+                            <td>{{ member.course|default:"-" }}</td>
+                            <td>
+                                {% if member.is_active %}
+                                <span class="badge text-bg-success">Active</span>
+                                {% else %}
+                                <span class="badge text-bg-secondary">Inactive</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td class="text-secondary p-4" colspan="6">No accounts found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

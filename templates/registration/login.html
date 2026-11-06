@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Log In | CampusConnect{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+            <section class="card campus-card">
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-uppercase small fw-semibold text-success mb-2">CampusConnect</p>
+                    <h1 class="h2 mb-2">Welcome back</h1>
+                    <p class="text-secondary mb-4">Log in to continue to your campus space.</p>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                        {% endif %}
+                        <button class="btn btn-success w-100" type="submit">Log in</button>
+                    </form>
+
+                    <p class="text-secondary text-center mt-4 mb-0">
+                        No account? <a href="{% url 'signup' %}">Create one</a>
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
