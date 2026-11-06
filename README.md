@@ -1,1 +1,1 @@
-# CSIT327-section-Lao-ErosJohn-FirstDjango
+# CSIT327-G5-Lao-ErosJohn-FirstDjango
